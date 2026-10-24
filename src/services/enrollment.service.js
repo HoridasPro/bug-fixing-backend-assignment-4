@@ -11,7 +11,7 @@ const enrollCourse = async (studentId, courseId, batchId = null) => {
     course: courseId,
   });
 
-  if (!enrollment) {
+  if (enrollment) {
     // Inverted logic bug: throws error when NOT enrolled
     throw new Error("Already enrolled in this course");
   }
@@ -35,6 +35,7 @@ const getMyEnrollments = async (studentId) => {
 
 const completeLesson = async (enrollId, lessonId) => {
   const enrollment = await Enrollment.findById(enrollId);
+  console.log("enrollment", Enrollment);
   if (!enrollment) throw new Error("Enrollment not found");
 
   // avoid duplicates
@@ -50,7 +51,7 @@ const completeLesson = async (enrollId, lessonId) => {
   const course = await Course.findById(enrollment.course);
   const totalLessons = course.syllabus.reduce(
     (sum, mod) => sum + mod.lessons.length,
-    0
+    0,
   );
 
   const completed = enrollment.progress.completedLessons.length;

@@ -1,51 +1,24 @@
-// // validation schemas for authentication
+// validation schemas for authentication
 
-// const { z } = require("zod");
-
-// const registerSchema = z.object({
-//   name: z.string().min(2),
-//   email: z.string().email(),
-//   password: z.string().min(6),
-//   adminKey: z.string().optional(), // Optional admin registration key
-// });
-
-// const loginSchema = z.object({
-//   email: z.string().email(),
-//   password: z.string().min(6),
-// });
-
-// module.exports = { registerSchema, loginSchema };
 const { z } = require("zod");
 
 const registerSchema = z.object({
-  name: z
-    .string({ required_error: "Name is required" })
-    .min(2, "Name must be at least 2 characters"),
+  body: z.object({
+    name: z.string().trim().min(2, "Name must be at least 2 characters long"),
 
-  email: z
-    .string({ required_error: "Email is required" })
-    .email("Invalid email address"),
+    email: z.string().trim().email("Please enter a valid email address"),
 
-  password: z
-    .string({ required_error: "Password is required" })
-    .min(6, "Password must be at least 6 characters"),
+    password: z.string().min(6, "Password must be at least 6 characters long"),
 
-  role: z
-    .enum(["student", "instructor", "admin"])
-    .optional()
-    .default("student"),
-
-  adminKey: z.string().optional(),
+    adminKey: z.string().optional(),
+  }),
 });
 
 const loginSchema = z.object({
-  email: z
-    .string({ required_error: "Email is required" })
-    .email("Invalid email address"),
-
-  password: z
-    .string({ required_error: "Password is required" })
-    .min(6, "Password must be at least 6 characters"),
+  body: z.object({
+    email: z.string().trim().email("Please enter a valid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters long"),
+  }),
 });
 
 module.exports = { registerSchema, loginSchema };
