@@ -17,7 +17,7 @@ const connectDB = async () => {
     return cachedConnection;
   }
 
-  const uri = process.env.MONGODB_URI || process.env.MONGO_URI; // Support both
+  const uri = process.env.MONGODB_URL || process.env.MONGO_URI; // Support both
   if (!uri) throw new Error("MONGODB_URI or MONGO_URI missing in .env");
 
   // If connection is in progress, wait for it
